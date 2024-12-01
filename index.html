@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <meta charset="utf-8">
+    <title>Welcome Home</title>
+    <meta name="description" content="Welcome Home - A-Frame">
+  
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene id = "mainScene">
+
+     
+      <a-assets>
+        <img id="sky1" crossorigin="anonymous" src="https://i.imgur.com/DlhXJk3.jpeg">
+        <img id="sky2" crossorigin="anonymous" src="https://acg-download.struffelproductions.com/file/ambientCG-Web/download/DayEnvironmentHDRI053_okjmEbFp/DayEnvironmentHDRI053_4K-TONEMAPPED.jpg">
+        <img id="sky3" crossorigin="anonymous" src="https://static.vecteezy.com/system/resources/previews/022/259/154/non_2x/white-seamless-360-hdri-panorama-in-interior-of-expensive-bathroom-in-modern-flat-apartments-with-washbasin-in-equirectangular-projection-with-zenith-and-nadir-vr-ar-content-photo.jpg">
+        <audio id="tvSound" crossorigin="anonymous" src="https://cdn.freesound.org/previews/761/761608_16436595-lq.mp3"></audio>
+        <audio id="doorSound" crossorigin="anonymous" src="https://cdn.freesound.org/previews/429/429146_7312716-lq.mp3"></audio>
+        <audio id="outdoorSound" crossorigin="anonymous" src="https://cdn.freesound.org/previews/390/390872_5956166-lq.mp3"></audio>
+        <audio id="bathroomSound" crossorigin="anonymous" src="https://cdn.freesound.org/previews/640/640905_13325778-lq.mp3"></audio>
+      </a-assets>
+
+     
+      <a-entity id ="indoor" visible = "true">
+        <!-- Sky -->
+        <a-sky id="sky" src="#sky1" rotation = "0 230 0"></a-sky>
+
+        <!-- Info Text Panel-->
+        <a-plane
+          src="https://i.imgur.com/y3oePmk.png"
+          material="transparent: true; opacity: 0.9; alphaTest: 0.1"
+          position="-1 2 -4"
+          rotation = "0 10 0"
+          width="2.7"
+          height="3"
+          visible="true">
+          <a-text 
+            font="exo2bold" 
+            value="Welcome Home!" 
+            width="5" 
+            position="-1 0.7 0" 
+            rotation="0 0 0">
+          </a-text>
+          <a-text 
+            font="exo2bold" 
+            value="Look around and press buttons\n to interact with various objects\n inside your home" 
+            width="3" 
+            position="-1 0 0" 
+            rotation="0 0 0">
+          </a-text>
+        </a-plane>
+        
+
+
+        <!-- TV Image -->
+        <a-entity id="tvImage">
+          <a-plane
+            src="https://cdn.aframe.io/examples/ui/kazetachinu.jpg"
+            position="3.2 -1 5.5"
+            rotation = "0 225 0"
+            width="3.3"
+            height="1.8"
+            visible="false">
+          </a-plane>
+
+          <a-plane
+            src="https://i.imgur.com/Nb5SQmU.jpeg"
+            position="3.2 -1 5.5"
+            rotation = "0 225 0"
+            width="3.3"
+            height="1.8"
+            visible="false">
+          </a-plane>
+
+          <a-plane
+            src="https://i.imgur.com/6iBN4hr.jpeg"
+            position="3.2 -1 5.5"
+            rotation = "0 225 0"
+            width="3.3"
+            height="1.8"
+            visible="false">
+          </a-plane>
+        </a-entity>
+
+        <!-- TV Button -->
+        <a-plane 
+          color="#FF5733"
+          width="0.7"
+          height="0.2"
+          position="-3.3 -1 0.4"
+          rotation="0 90 0"
+          class="raycastable"
+          event-set__mouseenter="material.color: #FFC300"
+          event-set__mouseleave="material.color: #FF5733"
+          onclick="switchTVImage()"
+          scale="1 1 1"
+            
+          animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; dir: alternate; loop: true;">
+        <a-text 
+          value="Switch on TV" 
+          color="#fff" 
+          width="2" 
+          position="-0.3 0.08 0.1">
+        </a-text>
+        </a-plane>
+
+   
+        <!-- Go outside arrow -->
+        <a-entity position="3 0.7 -1.5"> 
+          <a-plane
+          src="https://i.imgur.com/iPIlRP5.png"
+          material="transparent: true; opacity: 0.9; alphaTest: 0.5"
+            rotation = "0 310 0"
+            width="0.5"
+            height = "0.5"
+            class="raycastable" 
+            onclick="switchScene('outdoor')"
+            scale="1 1 1"
+            
+            animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; dir: alternate; loop: true;"></a-plane> <!--Animation-->
+            
+          </a-plane>
+        </a-entity>
+
+        <!-- Go to bathroom arrow -->
+        <a-entity position="-1.2 0.7 2"> 
+          <a-plane
+          src="https://i.imgur.com/iPIlRP5.png"
+          material="transparent: true; opacity: 0.9; alphaTest: 0.5"
+            rotation = "0 160 90"
+            width="0.5"
+            height = "0.5"
+            class="raycastable" 
+            onclick="switchScene('bathroom')"
+            scale="1 1 1"
+            
+            animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; dir: alternate; loop: true;"></a-plane> <!--Animation-->
+            
+          </a-plane>
+        </a-entity>
+
+      </a-entity>
+
+
+    <a-entity id ="outdoor" visible = "false">
+      <!-- Sky -->
+      <a-sky id="sky" src="#sky2" rotation = "0 230 0"></a-sky>
+
+
+        <!-- Go inside arrow -->
+        <a-entity position="-4 0.7 0"> 
+          <a-plane
+          src="https://i.imgur.com/iPIlRP5.png"
+          material="transparent: true; opacity: 0.9; alphaTest: 0.5"
+            rotation = "0 100 0"
+            width="0.5"
+            height = "0.5"
+            class="raycastable" 
+            onclick="switchScene('indoor')"
+            scale="1 1 1"
+            
+            animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; dir: alternate; loop: true;"></a-plane> <!--Animation-->
+            
+          </a-plane>
+        </a-entity>
+
+    </a-entity>
+
+
+    <a-entity id="bathroom" visible = "false">
+      <a-sky id="sky" src="#sky3" rotation = "0 230 0"></a-sky>
+
+
+      <a-entity position="-1.2 1.2 0.5"> 
+        <a-plane
+        src="https://i.imgur.com/iPIlRP5.png"
+        material="transparent: true; opacity: 0.9; alphaTest: 0.5"
+          rotation = "300 160 0"
+          width="0.5"
+          height = "0.5"
+          class="raycastable" 
+          onclick="switchScene('indoor')"
+          scale="1 1 1"
+          
+          animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; dir: alternate; loop: true;"></a-plane> <!--Animation-->
+          
+        </a-plane>
+      </a-entity>
+    </a-entity>
+
+    <!-- Add Cursor for Interaction -->
+    <a-entity 
+      camera 
+      look-controls
+      position="0 1.6 0">
+      <a-entity 
+        cursor="rayOrigin: mouse" 
+        position="0 0 -1" 
+        >
+      </a-entity>
+    </a-entity>
+
+    </a-scene>
+
+
+    <script>
+
+      tvImageIndex = 0;
+      // Function to switch between scenes
+      function switchScene(sceneId) {
+        // const scene1 = document.querySelector('#indoor');
+        // const scene2 = document.querySelector('#outdoor');
+
+        const scenes = document.querySelectorAll('#indoor, #outdoor, #bathroom')
+
+        const doorSound = document.querySelector('#doorSound');
+        const outdoorSound = document.querySelector('#outdoorSound');
+        const bathroomSound = document.querySelector('#bathroomSound');
+        
+        scenes.forEach(element => {
+          element.setAttribute('visible', false);
+        });
+
+
+        doorSound.currentTime = 0; // Reset sound to the beginning
+        doorSound.play();
+
+        if(sceneId=="outdoor"){
+          // scene1.setAttribute('visible', false);
+          
+
+          outdoorSound.currentTime = 0; // Reset sound to the beginning
+          outdoorSound.play();
+          bathroomSound.pause();
+        }
+        else if(sceneId=="indoor"){
+          // scene2.setAttribute('visible', false);
+          outdoorSound.pause();
+          bathroomSound.pause();
+        }
+        else if(sceneId=="bathroom"){
+          bathroomSound.currentTime = 0; // Reset sound to the beginning
+          bathroomSound.play();
+          // scene2.setAttribute('visible', false);
+          outdoorSound.pause();
+        }
+
+        console.log(sceneId)
+        document.querySelector(`#${sceneId}`).setAttribute('visible', true);
+      }
+
+      function switchTVImage(){
+        const tv = document.querySelectorAll('#tvImage a-plane');
+        const sound = document.querySelector('#tvSound');
+
+        tv.forEach(element => {
+          element.setAttribute('visible', false);
+        });
+
+        
+
+       
+        console.log(tvImageIndex+" "+tv.length);
+        if(tvImageIndex==tv.length){
+          
+          tv[tvImageIndex-1].setAttribute('visible', false);
+          tvImageIndex = 0;
+        }
+
+        else if(tvImageIndex<tv.length){
+          
+          tv[tvImageIndex].setAttribute('visible', true);
+          tvImageIndex++;
+        }
+
+        if (sound) {
+          sound.currentTime = 0; // Reset sound to the beginning
+          sound.play(); // Play sound
+        } 
+      }
+  
+  </script>
+ 
+  </body>
+</html>
